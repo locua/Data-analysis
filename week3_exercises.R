@@ -27,4 +27,6 @@ summary(lm(intention~1, data=dat))
 anova(lm(intention~1, data=dat), lm(intention~legacy, data=dat))
 # Reject the null hypothesis p < 0.000
 
-# 3. 
+# 3. Predict intention from belief
+anova(lm(intention~1, data=dat), lm(intention~belief, data=dat))
+# Reject the null hypothesis H0: B1=0 p < 0.000
