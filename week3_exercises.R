@@ -33,4 +33,5 @@ anova(lm(intention~1, data=dat), lm(intention~belief, data=dat))
 # Belief has a larger F stat and SSR so is a better predictor of intention than legacy
 
 # 4. 
-Anova(lm(donation~legacy+belief+intention, data=dat), type=3)
+summary(lm(donation~legacy+belief+intention, data=dat))
+#Anova(lm(donation~legacy+belief+intention, data=dat), type=3)
