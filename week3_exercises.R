@@ -11,24 +11,17 @@ ggplot(dat, aes(x=income)) + geom_histogram(binwidth =1, col="black", fill="brow
 ggplot(dat, aes(x=donation)) + geom_histogram(binwidth =1, col="black", fill="brown")
 ggplot(dat, aes(x=belief)) + geom_histogram(binwidth =1, col="black", fill="brown")
 
-
-ggplot(dat, aes(x=intention, y=age)) + geom_point()
-ggplot(dat, aes(x=education, y=age)) + geom_point()
-ggplot(dat, aes(x=income, y=donation)) + geom_point()
-ggplot(dat, aes(x=education, y=donation)) + geom_point()
-ggplot(dat, aes(x=education, y=legacy)) + geom_point()
-ggplot(dat, aes(x=education, y=intention)) + geom_point()
-ggplot(dat, aes(x=intention, y=belief)) + geom_point()
-ggplot(dat, aes(x=intention, y=legacy)) + geom_point()
+library(GGally)
+ggpairs(dat[,c("legacy", "belief", "intention", "donation")], upper=list(continuous= wrap(ggally_cor, size=5, family="sans")))
 
 # 2. Predicting intention from legacy
-summary(lm(intention~1, data=dat))
-
-anova(lm(intention~1, data=dat), lm(intention~legacy, data=dat))
+#summary(lm(intention~1, data=dat))
+summary(lm(intention~legacy, data=dat))
 # Reject the null hypothesis p < 0.000
 
 # 3. Predict intention from belief
-anova(lm(intention~1, data=dat), lm(intention~belief, data=dat))
+#anova(lm(intention~1, data=dat), lm(intention~belief, data=dat))
+summary(lm(intention~belief, data=dat))
 # Reject the null hypothesis H0: B1=0 p < 0.000
 # Belief has a larger F stat and SSR so is a better predictor of intention than legacy
 
