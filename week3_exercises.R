@@ -30,3 +30,7 @@ anova(lm(intention~1, data=dat), lm(intention~legacy, data=dat))
 # 3. Predict intention from belief
 anova(lm(intention~1, data=dat), lm(intention~belief, data=dat))
 # Reject the null hypothesis H0: B1=0 p < 0.000
+# Belief has a larger F stat and SSR so is a better predictor of intention than legacy
+
+# 4. 
+Anova(lm(donation~legacy+belief+intention, data=dat), type=3)
