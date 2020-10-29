@@ -24,3 +24,16 @@ t.test(df1$everest_feet, mu=29030, alternative = "greater")
 t.test(anchoring$everest_feet, mu=29029)
 
 plot_raincloud(anchoring, y=everest_feet)
+
+dfcharles <- subset(anchoring, referrer=="charles")
+
+dfonline <-subset(anchoring, lab_or_online=="Online")
+dflab <-subset(anchoring, lab_or_online=="In-lab")
+
+t.test(dfcharles$everest_feet, mu=29029)
+
+t.test(c(29001, 29028, 32000, 29089, 29501, 28508), mu=29029)
+
+t.test(dfonline$everest_feet, mu=29029)
+t.test(dflab$everest_feet, mu=29029)
+
