@@ -12,7 +12,7 @@ ggplot(dat, aes(x=donation)) + geom_histogram(binwidth =1, col="black", fill="br
 ggplot(dat, aes(x=belief)) + geom_histogram(binwidth =1, col="black", fill="brown")
 
 library(GGally)
-ggpairs(dat[,c("legacy", "belief", "intention", "donation")], upper=list(continuous= wrap(ggally_cor, size=5, family="sans")))
+ggpairs(dat[,c("legacy", "belief", "intention", "donation")], upper=list(continuous= wrap(ggally_cor, size=3.5, family="sans")))
 
 # 2. Predicting intention from legacy
 #summary(lm(intention~1, data=dat))
@@ -26,5 +26,20 @@ summary(lm(intention~belief, data=dat))
 # Belief has a larger F stat and SSR so is a better predictor of intention than legacy
 
 # 4. 
-summary(lm(donation~legacy+belief+intention, data=dat))
+modr <- lm(donation~legacy+belief+intention, data=dat)
+summary(modr)
 #Anova(lm(donation~legacy+belief+intention, data=dat), type=3)
+
+
+# 5.
+hist(residuals(modg))
+plot(predict(modg), residuals(modg), xlab="Predicted", ylab="Residual")
+plot(modg)
+
+
+# 6. Predict donation from legacy, belief, intention, education and income
+modg <- lm(donation~legacy+belief+intention+education+income, data=dat)
+summary(modg)
+
+# 7. Modal comparison of 5 predictor model with 3 predictor model
+anova(lm(donation~1, data=dat), modg)
