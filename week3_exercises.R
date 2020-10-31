@@ -11,6 +11,8 @@ ggplot(dat, aes(x=income)) + geom_histogram(binwidth =1, col="black", fill="brow
 ggplot(dat, aes(x=donation)) + geom_histogram(binwidth =1, col="black", fill="brown")
 ggplot(dat, aes(x=belief)) + geom_histogram(binwidth =1, col="black", fill="brown")
 
+ggplot(dat, aes(x=belief, y=legacy)) + geom_point(size=2,shape=23)
+
 library(GGally)
 ggpairs(dat[,c("legacy", "belief", "intention", "donation")], upper=list(continuous= wrap(ggally_cor, size=3.5, family="sans")))
 
@@ -43,3 +45,4 @@ summary(modg)
 # 7. Modal comparison of 5 predictor model with 3 predictor model
 #Anova(lm(donation~1, data=dat), modg)
 anova(modr, modg)
+
