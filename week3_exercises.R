@@ -30,16 +30,16 @@ modr <- lm(donation~legacy+belief+intention, data=dat)
 summary(modr)
 #Anova(lm(donation~legacy+belief+intention, data=dat), type=3)
 
-
 # 5.
+# Histogram of errors
 hist(residuals(modg))
 plot(predict(modg), residuals(modg), xlab="Predicted", ylab="Residual")
 plot(modg)
-
 
 # 6. Predict donation from legacy, belief, intention, education and income
 modg <- lm(donation~legacy+belief+intention+education+income, data=dat)
 summary(modg)
 
 # 7. Modal comparison of 5 predictor model with 3 predictor model
-anova(lm(donation~1, data=dat), modg)
+#Anova(lm(donation~1, data=dat), modg)
+anova(modr, modg)
