@@ -1,0 +1,11 @@
+---
+title: "week4_exercises"
+author: "Louis"
+date: "01/11/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(sdamr)
+
+```
