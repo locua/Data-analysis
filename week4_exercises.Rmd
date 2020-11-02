@@ -4,8 +4,50 @@ author: "Louis"
 date: "01/11/2020"
 output: html_document
 ---
-
-```{r setup, include=FALSE}
+# Libraries and load data
+```{r setup} 
+#, include=FALSE}
 library(sdamr)
+library(tidyverse)
+library(Hmisc)
+# data("speeddate")
+load("data/speeddate.rda")
+utils::head(speeddate)# %>% html()
+```
+# Create model with interaction
+
+```{r model1}
+modg<-lm(other_like ~ other_attr*other_intel + other_fun*other_intel, data=speeddate)
+summary(modg)
+```
+## Equivalent tests with $F$ statistic
+```{r anova}
+car::Anova(modg, type=3)
+```
+
+## Namespaces
+```{r namespace}
+library(dplyr)
+head<-function(x, na.rm=FALSE) {
+  return("Where's your head?")
+}
+head(speeddate)
 
 ```
+
+# Centering
+```{r Centering}
+# Center other_like variable and store in new column
+speeddate$other_like_c <- speeddate$other_like - mean(speeddate$other_like, na.rm=TRUE)
+
+# With a function
+center<-function(x) {
+  scale(x, center=TRUE, scale=FALSE)
+}
+
+# Estimate centered model
+modg_c <- lm(other_like ~ center(other_attr)*center(other_intel) + center(other_fun)*center(other_intel), data=speeddate)
+summary(modg_c)
+
+```
+
