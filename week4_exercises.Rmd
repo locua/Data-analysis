@@ -2,7 +2,9 @@
 title: "week4_exercises"
 author: "Louis"
 date: "01/11/2020"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 # Libraries and load data
 ```{r setup} 
@@ -10,6 +12,7 @@ output: html_document
 library(sdamr)
 library(tidyverse)
 library(Hmisc)
+
 # data("speeddate")
 load("data/speeddate.rda")
 utils::head(speeddate)# %>% html()
@@ -50,4 +53,68 @@ modg_c <- lm(other_like ~ center(other_attr)*center(other_intel) + center(other_
 summary(modg_c)
 
 ```
+# Mediation
+## Import data
+```{r legacydata}
+
+library(readr)
+legacy2015 <- read_csv("~/codes/stats/r/data/legacy2015.csv")
+head(legacy2015)
+```
+```{r medmod1}
+mod1 <- lm(donation ~ legacy, data = legacy2015)
+mod2 <- lm(intention ~ legacy, data = legacy2015)
+mod3 <- lm(donation ~ intention + legacy, data = legacy2015)
+```
+
+## bootstrap mediation test with 2000 simulations
+```{r med1}
+# install.packages("mediation")
+set.seed(20201027)
+med <- mediation::mediate(model.m = mod2, model.y = mod3, sims = 2000, boot = TRUE, boot.ci.type = "bca", treat = "legacy", mediator = "intention")
+summary(med)
+```
+# Problems from problem class
+
+```{r problems}
+# Read csv view head
+redist2015<-read_csv("~/codes/stats/r/data/redist2015.csv")
+head(redist2015)
+```
+
+## 1.
+
+```{r 1r}
+# 1. 
+library(GGally)
+ggpairs(redist2015[,c("income", "SC_mean", "redist")], upper=list(continuous= wrap(ggally_cor, size=3.5, family="sans")))
+```
+
+## 2.
+
+```{r 2r}
+# 3 Models to assess whether the effect of income on redist is mediated by SC_mean
+mod1 <- lm(redist ~ income, data=redist2015)
+mod2 <- lm(SC_mean ~ income, data = redist2015)
+mod3 <- lm(redist ~ income + SC_mean, data = redist2015)
+
+summary(mod1)
+summary(mod2)
+summary(mod3)
+
+## mod1 - income has a significant negative correlation with redist
+## mod2 - income has a signifcant positive correlation with SC_mean
+## mod3 - There is a significant unique effect of SC_mean on redist when controlling for income
+##        but no significant unique effect of income (< 0.1)
+## Therefore we can say that there is a full mediation of the effect of income via SC_mean on redist.
+
+```
+
+## 3.
+
+```{r 3r}
+
+#med <- mediation::mediate(model.m = mod2, model.y = mod3, sims = 2000, boot = TRUE, boot.ci.type = "bca", treat = "legacy", mediator = "intention")
+```
+
 
