@@ -111,10 +111,29 @@ summary(mod3)
 ```
 
 ## 3.
-
+Non parametric bootstrap analysis of the mediated effect of income on redist
 ```{r 3r}
+set.seed(20201027)
+med <- mediation::mediate(model.m = mod2, model.y = mod3, sims = 1000, boot = TRUE, boot.ci.type = "bca", treat = "income", mediator = "SC_mean")
+summary(med)
+```
+## 4. 
 
-#med <- mediation::mediate(model.m = mod2, model.y = mod3, sims = 2000, boot = TRUE, boot.ci.type = "bca", treat = "legacy", mediator = "intention")
+```{r 4r}
+
+mod1c <- lm(redist ~ income + pol_att + age, data=redist2015)
+mod2c <- lm(SC_mean ~ income + pol_att + age, data = redist2015)
+mod3c <- lm(redist ~ income + SC_mean + pol_att + age, data = redist2015)
+
+summary(mod1c)
+summary(mod2c)
+summary(mod3c)
+
+
+set.seed(20201027)
+med <- mediation::mediate(model.m = mod2c, model.y = mod3c, sims = 1000, boot = TRUE, boot.ci.type = "bca", treat = "income", mediator = "SC_mean")
+summary(med)
+
 ```
 
 
