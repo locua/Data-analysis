@@ -7,7 +7,7 @@ output:
   html_document: default
 ---
 # Libraries and load data
-```{r setup} 
+```{r} 
 #, include=FALSE}
 library(sdamr)
 library(tidyverse)
@@ -108,6 +108,7 @@ summary(mod3)
 ##        but no significant unique effect of income (< 0.1)
 ## Therefore we can say that there is a full mediation of the effect of income via SC_mean on redist.
 
+
 ```
 
 ## 3.
@@ -134,6 +135,40 @@ set.seed(20201027)
 med <- mediation::mediate(model.m = mod2c, model.y = mod3c, sims = 1000, boot = TRUE, boot.ci.type = "bca", treat = "income", mediator = "SC_mean")
 summary(med)
 
+
+```
+## Further analyses
+1. 
+```{r}
+
+summary(lm(PD_fair ~ PD_gini+PD_mean+pol_att, data=redist2015))
+
+# Interaction effect?
+summary(lm(PD_fair ~ PD_gini*PD_mean + pol_att, data=redist2015))
+
+
+
 ```
 
+```{r}
+library(sdamr)
+
+summary(lm(PD_fair ~ center(PD_gini) + center(PD_mean) + center(pol_att), data=redist2015))
+
+```
+
+```{r 7r}
+mod1 <- lm(redist ~ PD_mean + income+pol_att+age, data=redist2015)
+summary(mod1)
+mod2 <- lm(PD_fair ~ PD_mean + income+pol_att+age, data=redist2015)
+summary(mod2)
+mod3 <- lm(redist ~ PD_mean + PD_fair+income+pol_att+age, data=redist2015)
+summary(mod3)
+
+set.seed(20201027)
+med <- mediation::mediate(model.m = mod2, model.y = mod3, sims = 1000, boot = TRUE, boot.ci.type = "bca", treat = "PD_mean", mediator = "PD_fair")
+summary(med)
+
+## Evidence for full mediation of via PD_fair of PD_mean on redist
+```
 
