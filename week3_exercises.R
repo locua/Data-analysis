@@ -4,14 +4,14 @@ library(ggplot2)
 dat <- read.csv("data/legacy2015.csv")
 
 # 1. Exploratory plots
-ggplot(dat, aes(x=age)) + geom_histogram(binwidth =1, col="black", fill="brown")
+ggplot(dat, aes(x=age))       + geom_histogram(binwidth =1, col="black", fill="brown")
 ggplot(dat, aes(x=intention)) + geom_histogram(binwidth =1, col="black", fill="brown")
 ggplot(dat, aes(x=education)) + geom_histogram(binwidth =1, col="black", fill="brown")
-ggplot(dat, aes(x=income)) + geom_histogram(binwidth =1, col="black", fill="brown")
-ggplot(dat, aes(x=donation)) + geom_histogram(binwidth =1, col="black", fill="brown")
-ggplot(dat, aes(x=belief)) + geom_histogram(binwidth =1, col="black", fill="brown")
+ggplot(dat, aes(x=income))    + geom_histogram(binwidth =1, col="black", fill="brown")
+ggplot(dat, aes(x=donation))  + geom_histogram(binwidth =1, col="black", fill="brown")
+ggplot(dat, aes(x=belief))    + geom_histogram(binwidth =1, col="black", fill="brown")
 
-ggplot(dat, aes(x=belief, y=legacy)) + geom_point(size=2,shape=23)
+ggplot(dat, aes(x=belief, y=legacy)) + geom_point(size=2,shape=3)
 
 library(GGally)
 ggpairs(dat[,c("legacy", "belief", "intention", "donation")], upper=list(continuous= wrap(ggally_cor, size=3.5, family="sans")))

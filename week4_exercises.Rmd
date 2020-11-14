@@ -6,6 +6,7 @@ output:
   word_document: default
   html_document: default
 ---
+
 # Libraries and load data
 ```{r} 
 #, include=FALSE}
