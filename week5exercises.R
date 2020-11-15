@@ -1,5 +1,5 @@
 data("anchoring")
-
+dat<-anchoring
 library(sdamr)
 
 #1.
@@ -19,11 +19,15 @@ summary(lm(everest_feet~dummy, data=anchoring))
 anchoring$anchor <- as.factor(anchoring$anchor)
 # anchor high = 0.5
 # anchor low = -0.5
-anchoring$effecta <- ifelse(anchoring$anchor=="high",0.5,-0.5)
-summary(lm(everest_feet~effecta, data=anchoring))
+#anchoring$effecta <- ifelse(anchoring$anchor=="high",0.5,-0.5)
+#summary(lm(everest_feet~effecta, data=anchoring))
+# Using contrasts
+dat$anchor <- as.factor(dat$anchor)
+contrasts(dat$anchor)  
+contrasts(dat$anchor)  <- c(.5,-.5)
+summary(lm(everest_feet~anchor, data=dat))
 
-
-
+# 4.
 
 
 
