@@ -42,3 +42,17 @@ colnames(codes) <- c(" us-v-inter", " inter-only")
 dat1$referrer <- as.factor(dat1$referrer)
 contrasts(dat1$referrer) <- codes
 summary(lm(everest_feet ~ referrer, data=dat1))
+
+# 7. Overall omnibus test for referrer
+car::Anova(lm(everest_feet~referrer, data=dat1), type=3)
+
+# 8.
+contrasts(dat1$referrer) <- contr.sum(3)
+summary(lm(everest_feet ~ referrer, data=dat1))
+car::Anova(lm(everest_feet~referrer, data=dat1), type=3)
+
+# 9.
+dat2<-subset(anchoring, anchor == 'low' & referrer %in% c("tilburg","wisc","laurier", "wpi"))
+plot_raincloud(dat2, everest_feet, groups=referrer)
+
+dat2$referrer<-as.factor(dat2$referrer)
