@@ -22,3 +22,51 @@ plot_raincloud(dat, ApproachAdvantage, groups=experimenterBelief) + facet_grid(~
 # or.. ?facet_wrap for more info
 plot_raincloud(dat, ApproachAdvantage, groups=experimenterBelief) + facet_wrap(~primeCond)
 
+# Check variables are factors
+class(dat$primeCond)
+class(dat$experimenterBelief)
+
+dat$primeCond <- as.factor(dat$primeCond)
+dat$experimenterBelief <- as.factor(dat$experimenterBelief)
+
+contrasts(dat$primeCond)
+contrasts(dat$primeCond) <- c(1/2, -1/2)
+
+contrasts(dat$experimenterBelief)
+contrasts(dat$experimenterBelief) <- c(1/2, -1/2)
+
+modg <- lm(ApproachAdvantage ~ primeCond*experimenterBelief, data=dat)
+summary(modg)
+# or 
+car::Anova(modg, type=3) # ?car::Anova ,types
+
+class(dat$exptrNum) # integer
+# Convert to factor
+dat$exptrNum <- factor(dat$exptrNum, labels=paste0("E",1:4))
+
+contrasts(dat$exptrNum)
+contrasts(dat$exptrNum) <- cbind(c(-1/2, 1/2,   0,  0), 
+                                 c(-1/3,-1/3, 2/3,  0),
+                                 c(-1/4,-1/4,-1/4,3/4))
+contrasts(dat$exptrNum)
+
+plot_raincloud(dat, ApproachAdvantage, groups = experimenterBelief) + facet_grid(primeCond ~ exptrNum)
+
+modg_exp <- lm(ApproachAdvantage ~ primeCond*experimenterBelief*exptrNum, data=dat)
+summary(modg_exp)
+
+car::Anova(modg_exp,type=3)
+
+ftable(exptrNum ~ primeCond + experimenterBelief, data=dat)
+
+car::Anova(modg_exp, type=2)
+
+anova(modg_exp)
+
+# Type 1 procedure
+anova(lm(ApproachAdvantage ~ experimenterBelief*exptrNum*primeCond, data=dat))
+
+
+library(emmeans)
+emmeans(modg, specs = ~ primeCond:experimenterBelief)
+
