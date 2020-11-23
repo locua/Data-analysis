@@ -1,4 +1,5 @@
 library(sdamr)
+library(ggplot2)
 #rm(list=ls()) # remove all objects in global environment (?)
 data("expBelief")
 head(expBelief)
@@ -66,7 +67,51 @@ anova(modg_exp)
 # Type 1 procedure
 anova(lm(ApproachAdvantage ~ experimenterBelief*exptrNum*primeCond, data=dat))
 
-
 library(emmeans)
 emmeans(modg, specs = ~ primeCond:experimenterBelief)
+
+emmeans(modg, specs = ~ primeCond)
+emmeans(modg, specs = ~ experimenterBelief)
+
+#####################################################################
+# Week 6 exercises
+dat<-read.csv("data/woolley.csv")
+
+dat<-dat[dat$role=="management",]
+
+plot_raincloud(dat, strike_days, groups=consumption)
+plot_raincloud(dat, strike_days, groups=relationship)
+
+class(dat$consumption)
+dat$consumption <- as.factor(dat$consumption)
+dat$relationship <- as.factor(dat$relationship)
+
+contrasts(dat$consumption) <- c(1/2, -1/2)
+contrasts(dat$relationship) <- c(-1/2, 1/2)
+
+contrasts(dat$consumption)
+contrasts(dat$relationship)
+
+mod <- lm(strike_days ~ consumption*relationship, data=dat)
+
+summary(mod)
+
+plot(mod) # Check if normal        
+
+qplot(mod$residuals, geom="density") +
+  labs(title = "Density of residuals", x = "residual") 
+# Skew present
+
+ggplot(mod, aes(x=mod$residuals)) +
+  geom_histogram(aes(y = ..density..),bins=30,fill="grey") +
+  geom_density(colour="red") 
+
+
+
+
+
+
+
+
+
 
